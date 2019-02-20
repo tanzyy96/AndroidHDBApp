@@ -1,4 +1,4 @@
-package com.example.androidhdb2;
+package com.example.androidhdb2.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
