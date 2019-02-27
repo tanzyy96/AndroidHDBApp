@@ -10,12 +10,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.androidhdb2.R;
+import com.example.androidhdb2.utils.PastBtoDataProvider;
+import com.example.androidhdb2.utils.SBFDataProvider;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthCredential;
@@ -23,6 +27,12 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -31,6 +41,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private GoogleSignInClient mGoogleSignInClient;
     private FirebaseAuth mAuth;
     private TextView textStatus;
+    public FirebaseFirestore db = FirebaseFirestore.getInstance();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,6 +126,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void updateUI(FirebaseUser account) {
         if (account!= null) {
             Toast.makeText(this, "Signed in as " + account.getDisplayName(), Toast.LENGTH_SHORT).show();
+            addFirebaseUser(account);
+
+//            PastBtoDataProvider provider = new PastBtoDataProvider();
+//            provider.readCSV(this);
+//            SBFDataProvider p = new SBFDataProvider();
+//            p.readCSV(this);
+
             Intent mainIntent = new Intent(this, MainActivity.class);
             startActivity(mainIntent);
         }
@@ -125,6 +144,28 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.sign_in_button:
                 Toast.makeText(LoginActivity.this, "Signing in", Toast.LENGTH_SHORT).show();
                 signIn();
+        }
+    }
+
+    public void addFirebaseUser(FirebaseUser account) {
+        // Add user to Firebase
+        if (account!=null) {
+            String userid = account.getUid();
+            Map<String, String> userMap = new HashMap<>();
+            db.collection("Users").document(userid)
+                    .set(userMap)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Log.d(TAG, "DocumentSnapshot successfully written!");
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.w(TAG, "Error writing document", e);
+                        }
+                    });
         }
     }
 }
