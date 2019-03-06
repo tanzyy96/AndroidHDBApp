@@ -6,52 +6,75 @@
     android:layout_height="match_parent"
     tools:context=".activities.BtoActivity">
 
-    <Button
+    <android.support.design.button.MaterialButton
         android:id="@+id/bto_button_upcoming"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="300dp"
+        style="@style/Button"
+        android:layout_width="230dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
+        android:height="50dp"
+        android:fontFamily="@font/playfair_display"
         android:text="Upcoming Launches"
-        android:textSize="20dp"
+        android:textSize="15sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.427" />
+        app:layout_constraintVertical_bias="0.532" />
 
-    <Button
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="129dp"
+        android:layout_height="181dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.322"
+        app:srcCompat="@drawable/housing" />
+
+    <android.support.design.button.MaterialButton
         android:id="@+id/bto_button_past"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="300dp"
+        style="@style/Button"
+        android:layout_width="230dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:text="Upcoming Launches"
-        android:textSize="20dp"
+        android:height="50dp"
+        android:fontFamily="@font/playfair_display"
+        android:text="Past Launches"
+        android:textSize="15sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bto_button_upcoming"
-        app:layout_constraintVertical_bias="0.052" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.644"/>
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/roboto_thin"
+        android:fontFamily="@font/playfair_display_bold"
         android:text="Build-to-Order"
-        android:textSize="30sp"
+        android:textColor="@android:color/black"
+        android:textSize="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.089"/>
+        app:layout_constraintVertical_bias="0.204" />
 </android.support.constraint.ConstraintLayout>

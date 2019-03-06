@@ -2,11 +2,11 @@ package com.example.androidhdb2.model;
 
 public class ResaleFlat extends Flat {
     private int remainingLease;
-    private int storey;
+    private String storey;
     private float floorArea;
     private int price;
 
-    public ResaleFlat(String flatID, String location, String flatSize, int price, int remainingLease, int storey, float floorArea) {
+    public ResaleFlat(String flatID, String location, String flatSize, int price, int remainingLease, String storey, float floorArea) {
         super(flatID, location, flatSize);
         this.price = price;
         this.remainingLease = remainingLease;
@@ -14,15 +14,15 @@ public class ResaleFlat extends Flat {
         this.floorArea = floorArea;
     }
 
-    public void setPrice(int price) {
-        this.price = price;
+    public int getPrice() {
+        return price;
     }
 
     public int getRemainingLease() {
         return remainingLease;
     }
 
-    public int getStorey() {
+    public String getStorey() {
         return storey;
     }
 

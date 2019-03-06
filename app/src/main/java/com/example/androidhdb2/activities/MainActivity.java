@@ -3,8 +3,6 @@ package com.example.androidhdb2.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -37,12 +35,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()) {
             case (R.id.bto_button):
                 Toast.makeText(this, "Open BTO page", Toast.LENGTH_SHORT).show();
+                Intent btoIntent = new Intent(this, BtoActivity.class);
+                startActivity(btoIntent);
                 break;
             case (R.id.resale_button):
                 Toast.makeText(this, "Open Resale page", Toast.LENGTH_SHORT).show();
+                Intent resaleIntent = new Intent(this, FilterActivity.class);
+                resaleIntent.putExtra("SearchType", "Resale");
+                startActivity(resaleIntent);
                 break;
             case (R.id.sob_button):
-                Toast.makeText(this, "Open SOB page", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Open SBF page", Toast.LENGTH_SHORT).show();
+                Intent sobIntent = new Intent(this, FilterActivity.class);
+                sobIntent.putExtra("SearchType", "SBF");
                 break;
         }
     }
