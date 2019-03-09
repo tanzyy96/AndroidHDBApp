@@ -21,10 +21,26 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+
 
 public class ResaleAPI {
 
     private ArrayList<ResaleFlat> ResaleFlatArray = new ArrayList<ResaleFlat>();
+    String[] Database_Flat_Type;
+    String[] Database_Floor_Area_range;
+    String[] Database_Remaining_Lease_range;
+    String[] Database_Selling_Price_range;
+    String[] Database_Storey_range;
+
+    public ResaleAPI(String[]database_Flat_Type, String[] database_Selling_Price_range, String[] database_Remaining_Lease_range, String[] database_Storey_range, String[] database_Floor_Area_range) {
+        Database_Flat_Type = database_Flat_Type;
+        Database_Floor_Area_range = database_Floor_Area_range;
+        Database_Remaining_Lease_range = database_Remaining_Lease_range;
+        Database_Selling_Price_range = database_Selling_Price_range;
+        Database_Storey_range =  database_Storey_range;
+
+    }
 
 
     public ArrayList<ResaleFlat> requestData(String url_region, String url_Flat_Type, String url_date_2019) {
@@ -39,6 +55,7 @@ public class ResaleAPI {
         urlBuilder.addQueryParameter("limit", "1000000");
         //urlBuilder.addQueryParameter("q", "2018");
         String url = urlBuilder.build().toString();
+        Log.d("RAPI", url);
 
         okhttp3.Request request = new okhttp3.Request.Builder()
                 .url(url)
@@ -57,7 +74,11 @@ public class ResaleAPI {
                         JSONObject json = new JSONObject(responseData);
                         JSONObject results = json.getJSONObject("result");
                         JSONArray jsonArray = results.getJSONArray("records");
-                        // Check for null return outside
+                        // Check for null return
+                        if (jsonArray == null) {
+                            Log.d("ResaleAPI", "NO RESULTS");
+                            return;
+                        }
 
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject jsonArraypos = jsonArray.getJSONObject(i);
@@ -88,12 +109,6 @@ public class ResaleAPI {
         });
         return ResaleFlatArray;
     }
-    String[] Database_Flat_Type = new String[]{"2 ROOM", "3 ROOM", "4 ROOM", "5 ROOM", "EXECUTIVE", "MULTI-GENERATION"};
-    String[] Database_Floor_Area_range = new String[]{"1sqm to 50sqm", "51sqm to 100sqm", "101sqm to 150sqm", "151sqm to 200sqm", "more than 200sqm"};
-    String[] Database_Remaining_Lease_range = new String[]{"1yr to 20yrs", "21yrs to 40yrs", "41yrs to 60yrs", "61yrs to 80yrs", "81yrs to 99yrs"};
-    String[] Database_Selling_Price_range = new String[]{"$1 to $200,000", "$200,001 to $400,000", "$400,001 to 600,000", "$600,001 to $800,000", "$800,001 to $1,000,000", "more than $1,000,000"};
-    String[] Database_Storey_range = new String[]{"1st floor to 4th floor", "5th floor to 8th floor", "9th floor to 12th floor", "13th floor to 16th floor", "more than 16th floor"};
-
 
     public ArrayList<ResaleFlat> filterFlats(ArrayList<ResaleFlat> flats, String flat_type, String sellingprice, String lease_range, String storey_range, String floor_area_range) {
         ArrayList<ResaleFlat> relevantFlats = new ArrayList<ResaleFlat>();
