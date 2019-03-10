@@ -1,6 +1,7 @@
 package com.example.androidhdb2.controllers;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.example.androidhdb2.model.PastBtoFlat;
 import com.example.androidhdb2.model.ResaleFlat;
@@ -22,8 +23,9 @@ public class FlatController {
 //
     public ArrayList<ResaleFlat> getResale(String[] flatList, String[] priceList, String[] leaseList, String[] storeyList, String[] areaList,
                                            String flatType, String priceRange, String remainingLeaseRange, String storeyRange, String floorAreaRange, String region) {
-        ResaleAPI api = new ResaleAPI(flatList, areaList,  leaseList, priceList, storeyList);
+        ResaleAPI api = new ResaleAPI(flatList, priceList, leaseList, storeyList, areaList);
         ArrayList<ResaleFlat> resaleFlatArrayListList = api.requestData(region, flatType, "2019");
+        Log.d("Flatcontroller", String.valueOf(resaleFlatArrayListList));
         return api.filterFlats(resaleFlatArrayListList, flatType, priceRange, remainingLeaseRange, storeyRange, floorAreaRange);
     }
 //

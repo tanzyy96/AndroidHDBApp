@@ -73,15 +73,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Bundle extras = intent.getExtras();
         final String[] flatdetail = extras.getStringArray("FLAT DETAILS");
 
-        flatdetail[0] = flatType;
+        flatType= flatdetail[0];
         if(flatdetail[1] != null)
-            flatdetail[1] = priceRange;
+            priceRange = flatdetail[1];
         if(flatdetail[2] != null)
-            flatdetail[2] = leaseRange;
+            leaseRange = flatdetail[2];
         if(flatdetail[3] != null)
-            flatdetail[3] = storeyRange;
+            storeyRange = flatdetail[3];
         if(flatdetail[4] != null)
-            flatdetail[4] = areaRange;
+            areaRange = flatdetail[4];
 
         for(int i = 0; i<flatdetail.length;i++)
         {
@@ -1005,9 +1005,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         FlatController fc = new FlatController();
         ArrayList<ResaleFlat> l = fc.getResale(getResources().getStringArray(R.array.FlatType),
                 getResources().getStringArray(R.array.Selling_Price_Range),
-                getResources().getStringArray(R.array.Floor_Area_Range),
                 getResources().getStringArray(R.array.Remaining_Lease_Range),
                 getResources().getStringArray(R.array.Storey_Range),
+                getResources().getStringArray(R.array.Floor_Area_Range),
                 flatType, priceRange, leaseRange, storeyRange, areaRange, region);
         return l;
     }

@@ -29,4 +29,14 @@ public class ResaleFlat extends Flat {
     public float getFloorArea() {
         return floorArea;
     }
+
+    @Override
+    public String toString() {
+        return "ResaleFlat{" +
+                "remainingLease=" + remainingLease +
+                ", storey='" + storey + '\'' +
+                ", floorArea=" + floorArea +
+                ", price=" + price +
+                '}';
+    }
 }

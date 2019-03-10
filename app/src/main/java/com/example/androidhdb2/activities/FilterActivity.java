@@ -49,6 +49,7 @@ public class FilterActivity extends AppCompatActivity implements AdapterView.OnI
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             TextView view = (TextView) super.getView(position, convertView, parent);
+            Log.d("VIEW", String.valueOf(view.getText()));
             view.setTypeface(font);
             return view;
         }
@@ -162,7 +163,7 @@ public class FilterActivity extends AppCompatActivity implements AdapterView.OnI
             case R.id.FlatType:
                 Flat_Type = parent.getItemAtPosition(pos).toString();
 //                Toast.makeText(this, Flat_Type, Toast.LENGTH_LONG).show();
-                Log.d("FLAT","FLAT TYPE HAPPENED");
+                Log.d("FLAT","FLAT TYPE HAPPENED"+Flat_Type);
                 break;
             case R.id.Selling_Price_Range:
                 Selling_Price_range = parent.getItemAtPosition(pos).toString();
