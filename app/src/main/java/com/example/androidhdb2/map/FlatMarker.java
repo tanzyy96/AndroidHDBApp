@@ -8,6 +8,7 @@ public class FlatMarker implements ClusterItem {
     private String title;
     private String snippet;
     private int iconPic;
+    private int price;
 
     public FlatMarker(LatLng position, String title, String snippet, int iconPic) {
         this.position = position;
@@ -15,6 +16,7 @@ public class FlatMarker implements ClusterItem {
         this.snippet = snippet;
         this.iconPic = iconPic;
     }
+
 
     public FlatMarker() {
     }

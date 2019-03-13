@@ -33,6 +33,7 @@ public class ResaleFlat extends Flat {
     @Override
     public String toString() {
         return "ResaleFlat{" +
+                "location=" + getLocation() +
                 "remainingLease=" + remainingLease +
                 ", storey='" + storey + '\'' +
                 ", floorArea=" + floorArea +

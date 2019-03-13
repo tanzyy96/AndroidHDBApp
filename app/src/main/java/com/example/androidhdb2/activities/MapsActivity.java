@@ -1,6 +1,7 @@
 package com.example.androidhdb2.activities;
 
 import android.content.Context;
+import java.lang.*;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -8,9 +9,15 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.location.Address;
+import android.location.Geocoder;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.androidhdb2.R;
@@ -18,6 +25,7 @@ import com.example.androidhdb2.controllers.FlatController;
 import com.example.androidhdb2.map.BtoInfoWindowAdapter;
 import com.example.androidhdb2.map.ClusterManagerRenderer;
 import com.example.androidhdb2.map.FlatMarker;
+import com.example.androidhdb2.model.Flat;
 import com.example.androidhdb2.model.ResaleFlat;
 import com.example.androidhdb2.utils.ResaleAPI;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -35,18 +43,21 @@ import com.google.android.gms.maps.model.Polygon;
 import com.google.android.gms.maps.model.PolygonOptions;
 import com.google.maps.android.clustering.ClusterManager;
 
+import java.io.IOException;
 import java.lang.reflect.Array;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
 
 
-    private static final int STROKE_WIDTH = 2;
+    private static final int STROKE_WIDTH = 4;
     private static final int FILL_COLOR = 0x20ffff00;
 
     private Polygon pre_region=null;
@@ -65,6 +76,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     String areaRange;
     String region;
 
+    // For BottomSheet
+    TextView location;
+    TextView price;
+    TextView details;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +107,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        LinearLayout bottomSheetLayout = findViewById(R.id.bottom_sheet);
+        BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetLayout);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
     }
 
 
@@ -954,17 +973,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat,lng), 13.2f));
                 region = hm.get(polygon);
                 ArrayList<ResaleFlat> resaleFlatArrayList = CallResaleFlatController();
+
+
                 Log.d("RESALE", String.valueOf(resaleFlatArrayList));
                 for(int i = 0; i<resaleFlatArrayList.size(); i++)
                     Log.d("RESALE"+String.valueOf(i), String.valueOf(resaleFlatArrayList.get(i)));
-
-
-
+                refreshMarkers(resaleFlatArrayList);
 
             }
         });
-
-        addMarkers();
 
 
     }
@@ -975,7 +992,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-    private void addMarkers(){
+    private void refreshMarkers(ArrayList<? extends Flat> flatArrayList){   // use of wildcard
         if(mClusterManager== null){
             mClusterManager = new ClusterManager<>(this.getApplicationContext(),mMap);
         }
@@ -993,10 +1010,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         String snippet = "Flat ABCXYZ \nType X-room\nHello World";
         int avatar = R.drawable.flatava;
-        FlatMarker miranaMarker = new FlatMarker(new LatLng(1.347687, 103.712949),"Chinam Headquarter",snippet,avatar);
-        mClusterManager.addItem(miranaMarker);
-        mClusterMarkers.add(miranaMarker);
-        mClusterManager.cluster();
+//        FlatMarker miranaMarker = new FlatMarker(new LatLng(1.347687, 103.712949),"Chinam Headquarter",snippet,avatar);
+//        mClusterManager.addItem(miranaMarker);
+//        mClusterMarkers.add(miranaMarker);
+//        mClusterManager.cluster();
+        mClusterManager.clearItems();
+        mClusterMarkers.clear();
+        for (Flat flat:flatArrayList) {
+            LatLng ll = getLLFromAddress(this, flat.getLocation());
+            FlatMarker fm = new FlatMarker(ll, flat.getLocation(),snippet,avatar);
+            mClusterManager.addItem(fm);
+            mClusterMarkers.add(fm);
+            mClusterManager.cluster();
+        }
 
 
     }
@@ -1010,6 +1036,30 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 getResources().getStringArray(R.array.Floor_Area_Range),
                 flatType, priceRange, leaseRange, storeyRange, areaRange, region);
         return l;
+    }
+
+    public LatLng getLLFromAddress(Context context, String strAddress) {
+
+        Geocoder coder = new Geocoder(context);
+        List<Address> address;
+        LatLng p1 = null;
+
+        try {
+            // May throw an IOException
+            address = coder.getFromLocationName(strAddress, 5);
+            if (address == null) {
+                return null;
+            }
+
+            Address location = address.get(0);
+            p1 = new LatLng(location.getLatitude(), location.getLongitude() );
+
+        } catch (IOException ex) {
+
+            ex.printStackTrace();
+        }
+
+        return p1;
     }
 
 

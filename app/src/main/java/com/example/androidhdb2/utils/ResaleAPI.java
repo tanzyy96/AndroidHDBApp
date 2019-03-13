@@ -66,10 +66,12 @@ public class ResaleAPI {
             @Override
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
+                Log.d("ResaleAPIr","Request failed");
             }
 
             @Override
             public void onResponse(Call call, Response response) {
+                Log.d("ResaleAPIr","Response received");
                 try {
                     final String responseData = response.body().string();
                     try {
@@ -77,10 +79,7 @@ public class ResaleAPI {
                         JSONObject results = json.getJSONObject("result");
                         JSONArray jsonArray = results.getJSONArray("records");
                         // Check for null return
-                        if (jsonArray == null) {
-                            Log.d("ResaleAPI", "NO RESULTS");
-                            return;
-                        }
+                        Log.d("ResaleAPIjson", String.valueOf(jsonArray));
 
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject jsonArraypos = jsonArray.getJSONObject(i);
