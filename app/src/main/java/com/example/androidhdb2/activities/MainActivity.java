@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.androidhdb2.R;
@@ -13,6 +14,7 @@ import com.example.androidhdb2.R;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     Button bto_button, resale_button, sob_button;
+    ImageButton help_button;
 
 
     @Override
@@ -23,11 +25,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         bto_button = findViewById(R.id.bto_button);
         resale_button = findViewById(R.id.resale_button);
         sob_button = findViewById(R.id.sob_button);
+        help_button = findViewById(R.id.help_button);
 
         bto_button.setOnClickListener(this);
         resale_button.setOnClickListener(this);
         sob_button.setOnClickListener(this);
-
+        help_button.setOnClickListener(this);
     }
 
     @Override
@@ -48,6 +51,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Toast.makeText(this, "Open SBF page", Toast.LENGTH_SHORT).show();
                 Intent sobIntent = new Intent(this, FilterActivity.class);
                 sobIntent.putExtra("SearchType", "SBF");
+                break;
+            case (R.id.help_button):
+                Toast.makeText(this, "Open Help page", Toast.LENGTH_SHORT).show();
+                Intent helpIntent = new Intent(this, HelpActivity.class);
+                startActivity(helpIntent);
                 break;
         }
     }

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.HelpActivity">
+
+
+    <TextView
+        android:id="@+id/textView"
+
+        android:layout_width="wrap_content"
+        android:layout_height="389dp"
+
+        android:fontFamily="@font/playfair_display"
+        android:maxLines="10"
+        android:text="This is the real application for your future! \n First filter your favorite flat, then choose region. \n Then let's go!"
+        android:textColor="@color/primary_text"
+        android:textSize="15dp"
+        tools:layout_editor_absoluteX="20dp"
+        tools:layout_editor_absoluteY="48dp" />
+</android.support.constraint.ConstraintLayout>
