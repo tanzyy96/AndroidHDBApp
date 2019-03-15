@@ -11,14 +11,15 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.location.Address;
 import android.location.Geocoder;
-import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.androidhdb2.R;
 import com.example.androidhdb2.controllers.FlatController;
@@ -41,6 +42,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PatternItem;
 import com.google.android.gms.maps.model.Polygon;
 import com.google.android.gms.maps.model.PolygonOptions;
+import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.clustering.ClusterManager;
 
 import java.io.IOException;
@@ -52,10 +54,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,View.OnClickListener, ClusterManager.OnClusterItemClickListener<FlatMarker> {
 
     private GoogleMap mMap;
 
+    private ImageButton bookmarkButton;
 
     private static final int STROKE_WIDTH = 4;
     private static final int FILL_COLOR = 0x20ffff00;
@@ -67,6 +70,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private ClusterManager<FlatMarker> mClusterManager;
     private ClusterManagerRenderer mClusterManagerRenderer;
     private ArrayList<FlatMarker> mClusterMarkers = new ArrayList<>();
+    private FlatMarker clickFlatMarker;
 
     // For FlatController
     String flatType;
@@ -76,10 +80,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     String areaRange;
     String region;
 
-    // For BottomSheet
-    TextView location;
-    TextView price;
-    TextView details;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,11 +108,40 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        LinearLayout bottomSheetLayout = findViewById(R.id.bottom_sheet);
-        BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetLayout);
-        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        bookmarkButton = findViewById(R.id.bookmark_button);
+
+        bookmarkButton.setOnClickListener(this);
+
+
+
     }
 
+    @Override
+    public boolean onClusterItemClick(FlatMarker flatMarker) {
+        clickFlatMarker = flatMarker;
+        Toast.makeText(this, "Flat Clicked!", Toast.LENGTH_SHORT).show();
+        return true;
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case (R.id.bookmark_button):
+                if (clickFlatMarker == null) {
+                   Toast.makeText(this, "No flat is chosen!", Toast.LENGTH_SHORT).show();}
+                else {
+                    Flat flat = clickFlatMarker.getFlat();
+                   if (flat.isBookmarked()) {
+                        Toast.makeText(this, "Unbookmarked this flat", Toast.LENGTH_SHORT).show();
+                        flat.setBookmarked();
+                   } else {
+                        Toast.makeText(this, "Bookmarked this flat", Toast.LENGTH_SHORT).show();
+                        flat.setBookmarked();
+                   }
+                 break;
+            }
+        }
+    }
 
     /**
      * Manipulates the map once available.
@@ -945,6 +974,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         hm.put(yishun, "YISHUN");
         hm.put(sembawang, "SEMBAWANG");
 
+        if(mClusterManager== null){
+            mClusterManager = new ClusterManager<>(this.getApplicationContext(),mMap);
+        }
+        if(mClusterManagerRenderer == null){
+            mClusterManagerRenderer = new ClusterManagerRenderer(
+                    this,
+                    mMap,
+                    mClusterManager
+            );
+            mClusterManager.setRenderer(mClusterManagerRenderer);
+        }
+        //mMap.setInfoWindowAdapter(new BtoInfoWindowAdapter(this));
+
+        //for Cluster Item Click Listener
+        mMap.setOnMarkerClickListener(mClusterManager);
+        mClusterManager.setOnClusterItemClickListener(this);
 
 
         mMap.setOnPolygonClickListener(new GoogleMap.OnPolygonClickListener() {
@@ -993,18 +1038,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private void refreshMarkers(ArrayList<? extends Flat> flatArrayList){   // use of wildcard
-        if(mClusterManager== null){
-            mClusterManager = new ClusterManager<>(this.getApplicationContext(),mMap);
-        }
-        if(mClusterManagerRenderer == null){
-            mClusterManagerRenderer = new ClusterManagerRenderer(
-                    this,
-                    mMap,
-                    mClusterManager
-            );
-            mClusterManager.setRenderer(mClusterManagerRenderer);
-        }
-        mMap.setInfoWindowAdapter(new BtoInfoWindowAdapter(this));
+
 
         // test a custom marker
 
@@ -1018,7 +1052,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mClusterMarkers.clear();
         for (Flat flat:flatArrayList) {
             LatLng ll = getLLFromAddress(this, flat.getLocation());
-            FlatMarker fm = new FlatMarker(ll, flat.getLocation(),snippet,avatar);
+            FlatMarker fm = new FlatMarker(ll, flat.getLocation(),snippet,avatar,flat);
             mClusterManager.addItem(fm);
             mClusterMarkers.add(fm);
             mClusterManager.cluster();

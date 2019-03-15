@@ -2,7 +2,8 @@
 <android.support.design.widget.CoordinatorLayout android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    xmlns:layout="http://schemas.android.com/apk/res-auto">
+    xmlns:layout="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/tools">
 
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
@@ -12,10 +13,26 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".activities.MapsActivity"/>
+        tools:context=".activities.MapsActivity" />
 
-    <include layout="@layout/bottom"></include>
-
+    <ImageButton
+        android:id="@+id/bookmark_button"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0"
+        app:layout_constraintHorizontal_bias="0"
+        app:srcCompat="@drawable/bookmark"
+        android:adjustViewBounds="true"
+        android:padding="0.1dp"
+        android:scaleType="fitCenter"/>
 
 
 </android.support.design.widget.CoordinatorLayout>

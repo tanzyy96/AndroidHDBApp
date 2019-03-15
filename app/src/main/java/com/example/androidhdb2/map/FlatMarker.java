@@ -1,5 +1,6 @@
 package com.example.androidhdb2.map;
 
+import com.example.androidhdb2.model.Flat;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterItem;
 
@@ -9,12 +10,14 @@ public class FlatMarker implements ClusterItem {
     private String snippet;
     private int iconPic;
     private int price;
+    private Flat flat;
 
-    public FlatMarker(LatLng position, String title, String snippet, int iconPic) {
+    public FlatMarker(LatLng position, String title, String snippet, int iconPic ,Flat flat) {
         this.position = position;
         this.title = title;
         this.snippet = snippet;
         this.iconPic = iconPic;
+        this.flat = flat;
     }
 
 
@@ -54,5 +57,9 @@ public class FlatMarker implements ClusterItem {
 
     public void setIconPic(int iconPic) {
         this.iconPic = iconPic;
+    }
+
+    public Flat getFlat(){
+        return flat;
     }
 }
