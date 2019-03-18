@@ -34,6 +34,7 @@ public class FilterActivity extends AppCompatActivity implements AdapterView.OnI
     String Storey_range;
     String Floor_Area_range;
     String[] flatdetail = new String[6];
+    Bundle bundle;
 
 
     // Custom class for custom spinner font
@@ -69,6 +70,7 @@ public class FilterActivity extends AppCompatActivity implements AdapterView.OnI
         setContentView(R.layout.activity_resale);
         final Intent intent = getIntent();
         final String SearchType = intent.getExtras().getString("SearchType");
+        String userID = intent.getStringExtra("UserID");
 
         // Spinners
 
@@ -145,6 +147,7 @@ public class FilterActivity extends AppCompatActivity implements AdapterView.OnI
                     Bundle extras = new Bundle();
                     extras.putStringArray("FLAT DETAILS", flatdetail);
                     extras.putString("SearchType", SearchType);
+                    extras.putString("UserID", userID);
                     //extras.putString("MORE STUFFS", MORESTUFFS); Can put multiple stuff in extra
                     Intent intent = new Intent(FilterActivity.this, MapsActivity.class);
                     intent.putExtras(extras);

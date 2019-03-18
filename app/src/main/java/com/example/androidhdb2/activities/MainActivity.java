@@ -13,12 +13,14 @@ import com.example.androidhdb2.R;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     Button bto_button, resale_button, sob_button;
+    String userID;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        userID = getIntent().getStringExtra("UserID");
 
         bto_button = findViewById(R.id.bto_button);
         resale_button = findViewById(R.id.resale_button);
@@ -41,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case (R.id.resale_button):
                 Toast.makeText(this, "Open Resale page", Toast.LENGTH_SHORT).show();
                 Intent resaleIntent = new Intent(this, FilterActivity.class);
+                resaleIntent.putExtra("UserID", userID);
                 resaleIntent.putExtra("SearchType", "Resale");
                 startActivity(resaleIntent);
                 break;

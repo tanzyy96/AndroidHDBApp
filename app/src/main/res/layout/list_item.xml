@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:padding="5dp">
+
+    <TextView
+        android:id="@+id/itemName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:fontFamily="@font/playfair_display_black"
+        android:text="itemName"
+        android:textSize="15dp" />
+
+    <TextView
+        android:id="@+id/itemPrice"
+        android:fontFamily="@font/playfair_display"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="9dp"
+        android:textSize="15dp"
+        android:text="Price" />
+
+    <TextView
+        android:id="@+id/itemDetails"
+        android:fontFamily="@font/playfair_display"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/itemName"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:padding="5dp"
+        android:text="Details"
+        android:textSize="12dp"/>
+</RelativeLayout>

@@ -2,10 +2,14 @@ package com.example.androidhdb2.model;
 
 // PAST LAUNCHES //
 
-public class PastBtoFlat extends Flat{
+import java.io.Serializable;
+
+public class PastBtoFlat extends Flat implements Serializable {
     private String image;
     private int price;
     private String region;
+
+    public PastBtoFlat() {}
 
     public PastBtoFlat(String flatID, String location, String flatSize, int price, String image, String region) {
         super(flatID, location, flatSize);
@@ -24,5 +28,14 @@ public class PastBtoFlat extends Flat{
 
     public String getRegion() {
         return region;
+    }
+
+    @Override
+    public String toString() {
+        return "PastBtoFlat{" +
+                "image='" + image + '\'' +
+                ", price=" + price +
+                ", region='" + region + '\'' +
+                '}';
     }
 }

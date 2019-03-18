@@ -1,6 +1,7 @@
 package com.example.androidhdb2.activities;
 
 import android.content.Intent;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,6 +11,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.androidhdb2.R;
+import com.example.androidhdb2.model.Bookmark;
+import com.example.androidhdb2.model.User;
 import com.example.androidhdb2.utils.PastBtoDataProvider;
 import com.example.androidhdb2.utils.SBFDataProvider;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -27,14 +30,22 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final int RC_SIGN_IN = 1001;
     public static final String TAG = "LoginActivity";
@@ -42,6 +53,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private FirebaseAuth mAuth;
     private TextView textStatus;
     public FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private String userid;
 
 
     @Override
@@ -124,48 +136,101 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
     private void updateUI(FirebaseUser account) {
-        if (account!= null) {
+        if (account != null) {
             Toast.makeText(this, "Signed in as " + account.getDisplayName(), Toast.LENGTH_SHORT).show();
-            addFirebaseUser(account);
+//            checkFirebaseUser(account);
 
 //            PastBtoDataProvider provider = new PastBtoDataProvider();
 //            provider.readCSV(this);
 //            SBFDataProvider p = new SBFDataProvider();
 //            p.readCSV(this);
+            String accId = account.getUid();
+            ReadUserFile(accId);
 
             Intent mainIntent = new Intent(this, MainActivity.class);
+            mainIntent.putExtra("UserID", accId);
             startActivity(mainIntent);
         }
     }
 
     @Override
     public void onClick(View v) {
-        switch(v.getId()) {
+        switch (v.getId()) {
             case R.id.sign_in_button:
                 Toast.makeText(LoginActivity.this, "Signing in", Toast.LENGTH_SHORT).show();
                 signIn();
         }
     }
 
-    public void addFirebaseUser(FirebaseUser account) {
-        // Add user to Firebase
-        if (account!=null) {
-            String userid = account.getUid();
-            Map<String, String> userMap = new HashMap<>();
-            db.collection("Users").document(userid)
-                    .set(userMap)
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            Log.d(TAG, "DocumentSnapshot successfully written!");
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.w(TAG, "Error writing document", e);
-                        }
-                    });
+//    public void addFirebaseUser(FirebaseUser account) {
+//        // Add user to Firebase
+//        String userid = account.getUid();
+//        if (account != null) {
+//            Map<String, String> userMap = new HashMap<>();
+//            db.collection("Users").document(userid)
+//                    .set(userMap)
+//                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                        @Override
+//                        public void onSuccess(Void aVoid) {
+//                            Log.d(TAG, "DocumentSnapshot successfully written!");
+//                        }
+//                    })
+//                    .addOnFailureListener(new OnFailureListener() {
+//                        @Override
+//                        public void onFailure(@NonNull Exception e) {
+//                            Log.w(TAG, "Error writing document", e);
+//                        }
+//                    });
+//        }
+//    }
+
+
+//    private void checkFirebaseUser(FirebaseUser account) {
+//        String userid = account.getUid();
+//        CollectionReference colRef = db.collection("Users");
+//        colRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                if (task.isSuccessful()) {
+//                    for (QueryDocumentSnapshot document : task.getResult()) {
+//                        if (document.equals(userid)) {
+//                            Log.d(TAG, "User found!");
+//                            user = document.toObject(User.class);
+//
+//                            return;
+//                        }
+//                        addFirebaseUser(account);
+//                    }
+//                }
+//            }
+//        });
+//    }
+
+    private void ReadUserFile(String uid) {
+        File file = new File(getFilesDir(), uid );
+        if (file.exists()) {
+            Log.d(TAG, "File exists! Please import bookmarks");
+        } else {
+            CreateUserFile(uid);
+        }
+        userid = uid;
+    }
+
+    private void CreateUserFile(String uid) {
+
+        FileOutputStream fileOutputStream = null;
+        File file = new File(uid);
+        User user = new User(uid, new ArrayList<Bookmark>());
+
+        try {
+            fileOutputStream = openFileOutput(uid, MODE_PRIVATE);
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+            objectOutputStream.writeObject(user);
+            objectOutputStream.close();
+            Log.d(TAG, "File written");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
+

@@ -22,11 +22,9 @@ public class BtoInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
     private void addInfo(Marker marker, View view){
         String title = marker.getTitle();
         TextView tvTitle = view.findViewById(R.id.title);
-        TextView loc = view.findViewById(R.id.location);
 
         if (!title.equals("")) {
             tvTitle.setText(title);
-            loc.setText(title);
         }
 
         String flatInfo = marker.getSnippet();

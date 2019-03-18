@@ -19,14 +19,18 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.androidhdb2.R;
 import com.example.androidhdb2.controllers.FlatController;
+import com.example.androidhdb2.controllers.UserController;
 import com.example.androidhdb2.map.BtoInfoWindowAdapter;
 import com.example.androidhdb2.map.ClusterManagerRenderer;
 import com.example.androidhdb2.map.FlatMarker;
+import com.example.androidhdb2.model.Bookmark;
 import com.example.androidhdb2.model.Flat;
 import com.example.androidhdb2.model.ResaleFlat;
+import com.example.androidhdb2.model.User;
 import com.example.androidhdb2.utils.ResaleAPI;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -52,10 +56,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, ClusterManager.OnClusterItemClickListener<FlatMarker> {
 
     private GoogleMap mMap;
-
+    private String userid;
 
     private static final int STROKE_WIDTH = 4;
     private static final int FILL_COLOR = 0x20ffff00;
@@ -67,6 +71,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private ClusterManager<FlatMarker> mClusterManager;
     private ClusterManagerRenderer mClusterManagerRenderer;
     private ArrayList<FlatMarker> mClusterMarkers = new ArrayList<>();
+    private FlatMarker clickFlatMarker;
 
     // For FlatController
     String flatType;
@@ -87,6 +92,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
         final String[] flatdetail = extras.getStringArray("FLAT DETAILS");
+        userid = extras.getString("UserID");
+        Log.d("UserID",userid);
 
         flatType= flatdetail[0];
         if(flatdetail[1] != null)
@@ -111,6 +118,35 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LinearLayout bottomSheetLayout = findViewById(R.id.bottom_sheet);
         BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetLayout);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+    }
+
+    @Override
+    public boolean onClusterItemClick(FlatMarker flatMarker) {
+        clickFlatMarker = flatMarker;
+        Toast.makeText(this, "Flat Clicked!", Toast.LENGTH_SHORT).show();
+        return true;
+    }
+
+    public void clickMarker(View v) {
+        switch (v.getId()) {
+            case (R.id.bookmark):
+                if (clickFlatMarker == null) {
+                    Toast.makeText(this, "No flat is chosen!", Toast.LENGTH_SHORT).show();}
+                else {
+                    Flat flat = clickFlatMarker.getFlat();
+                    User user = UserController.importUser(this, getFilesDir(), userid);
+                    Log.d("UserController", String.valueOf(user));
+
+                    if (user.getBookmarkList().contains(new Bookmark(flat))) {
+                        Toast.makeText(this, "Unbookmarked this flat", Toast.LENGTH_SHORT).show();
+                        UserController.removeUserBookmark(this, getFilesDir(), userid, flat);
+                    } else {
+                        Toast.makeText(this, "Bookmarked this flat", Toast.LENGTH_SHORT).show();
+                        UserController.addUserBookmark(this, getFilesDir(), userid, flat);
+                    }
+                    break;
+                }
+        }
     }
 
 
@@ -945,6 +981,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         hm.put(yishun, "YISHUN");
         hm.put(sembawang, "SEMBAWANG");
 
+        if(mClusterManager== null){
+            mClusterManager = new ClusterManager<>(this.getApplicationContext(),mMap);
+        }
+        if(mClusterManagerRenderer == null){
+            mClusterManagerRenderer = new ClusterManagerRenderer(
+                    this,
+                    mMap,
+                    mClusterManager
+            );
+            mClusterManager.setRenderer(mClusterManagerRenderer);
+        }
+        //for Cluster Item Click Listener
+        mMap.setOnMarkerClickListener(mClusterManager);
+        mClusterManager.setOnClusterItemClickListener(this);
 
 
         mMap.setOnPolygonClickListener(new GoogleMap.OnPolygonClickListener() {
@@ -1018,7 +1068,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mClusterMarkers.clear();
         for (Flat flat:flatArrayList) {
             LatLng ll = getLLFromAddress(this, flat.getLocation());
-            FlatMarker fm = new FlatMarker(ll, flat.getLocation(),snippet,avatar);
+            FlatMarker fm = new FlatMarker(ll, flat.getLocation(),snippet,avatar, flat);
             mClusterManager.addItem(fm);
             mClusterMarkers.add(fm);
             mClusterManager.cluster();
@@ -1061,6 +1111,5 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         return p1;
     }
-
 
 }

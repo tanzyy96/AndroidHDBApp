@@ -1,10 +1,16 @@
 package com.example.androidhdb2.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class User {
+public class User implements Serializable {
     private String userID;
     private ArrayList<Bookmark> bookmarkList;
+
+    public User(){}
 
     public User(String userID, ArrayList<Bookmark> bookmarkList) {
         this.userID = userID;

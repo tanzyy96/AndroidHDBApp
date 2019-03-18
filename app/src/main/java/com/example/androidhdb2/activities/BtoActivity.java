@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.androidhdb2.R;
+import com.example.androidhdb2.controllers.FlatController;
 
 public class BtoActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -29,10 +30,13 @@ public class BtoActivity extends AppCompatActivity implements View.OnClickListen
                 Intent intent_upcoming = new Intent(this, BtoDetailActivity.class);
                 intent_upcoming.putExtra("BtoType", "Upcoming");
                 startActivity(intent_upcoming);
+                return;
             case R.id.bto_button_past:
                 Intent intent_past = new Intent(this, BtoDetailActivity.class);
                 intent_past.putExtra("BtoType", "Past");
                 startActivity(intent_past);
+                return;
+
         }
     }
 }
