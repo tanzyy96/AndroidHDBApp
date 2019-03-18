@@ -120,7 +120,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public boolean onClusterItemClick(FlatMarker flatMarker) {
         clickFlatMarker = flatMarker;
         Toast.makeText(this, "Flat Clicked!", Toast.LENGTH_SHORT).show();
-        return true;
+        return false;
     }
 
     @Override
