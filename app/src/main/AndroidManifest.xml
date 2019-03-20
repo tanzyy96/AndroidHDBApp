@@ -23,6 +23,7 @@
         <activity android:name=".activities.BTO_Upcoming_Activity" />
         <activity android:name=".activities.BtoActivity" />
         <activity android:name=".activities.MapsActivity" />
+        <activity android:name=".activities.HelpActivity" />
         <activity android:name=".activities.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
