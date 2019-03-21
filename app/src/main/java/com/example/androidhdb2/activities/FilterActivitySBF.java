@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -17,57 +18,26 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.androidhdb2.R;
-import com.example.androidhdb2.controllers.FlatController;
-import com.example.androidhdb2.model.ResaleFlat;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class FilterActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class FilterActivitySBF extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     Button click;
     public static TextView data;
-    String Flat_Type;
-    String Selling_Price_range;
-    String Remaining_Lease_range;
-    String Storey_range;
-    String Floor_Area_range;
+    String FlatTypeValue;
+    String SellingPriceRange;
+    String FlatSupplyRange;
+    String EthnicGroup;
+    String EthnicGroupQuota;
     String[] flatdetail = new String[6];
     Bundle bundle;
-
-
-    // Custom class for custom spinner font
-    public static class MySpinnerAdapter extends ArrayAdapter<String> {
-        // Initialise custom font
-        Typeface font = ResourcesCompat.getFont(getContext(),R.font.playfair_display_bold);
-
-        public MySpinnerAdapter(Context context, int resource, List<String> items) {
-            super(context, resource, items);
-        }
-
-        // Affects default (closed) state of the spinner
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            TextView view = (TextView) super.getView(position, convertView, parent);
-            Log.d("VIEW", String.valueOf(view.getText()));
-            view.setTypeface(font);
-            return view;
-        }
-
-        // Affects opened state of the spinner
-        @Override
-        public View getDropDownView(int position, View convertView, ViewGroup parent) {
-            TextView view = (TextView) super.getDropDownView(position, convertView, parent);
-            view.setTypeface(font);
-            return view;
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_resale);
+        setContentView(R.layout.activity_filter_sbf);
         final Intent intent = getIntent();
         final String SearchType = intent.getExtras().getString("SearchType");
         String userID = intent.getStringExtra("UserID");
@@ -76,22 +46,22 @@ public class FilterActivity extends AppCompatActivity implements AdapterView.OnI
 
         Spinner FlatType = (Spinner) findViewById(R.id.FlatType);
         Spinner Selling_Price_Range = (Spinner) findViewById(R.id.Selling_Price_Range);
-        Spinner Remaining_Lease_Range = (Spinner) findViewById(R.id.Remaining_Lease_Range);
-        final Spinner Storey_Range = (Spinner) findViewById(R.id.Storey_Range);
-        Spinner Floor_Area_Range = (Spinner) findViewById(R.id.Floor_Area_Range);
+        Spinner Flat_Supply_Range = (Spinner) findViewById(R.id.Flat_Supply_Range);
+        Spinner Ethnic_Group = (Spinner) findViewById(R.id.Ethnic_Group);
+        Spinner Ethnic_Group_Quota = (Spinner) findViewById(R.id.Ethnic_Group_Quota);
 
         // Custom ArrayAdapter to change font
-        MySpinnerAdapter FlatTypeAdapter = new MySpinnerAdapter(getApplicationContext(), android.R.layout.simple_spinner_item,
-                Arrays.asList(getResources().getStringArray(R.array.FlatType)));
+        FilterActivity.MySpinnerAdapter FlatTypeAdapter = new FilterActivity.MySpinnerAdapter(getApplicationContext(), android.R.layout.simple_spinner_item,
+                Arrays.asList(getResources().getStringArray(R.array.FlatType2)));
 
         FlatTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         FlatType.setAdapter(FlatTypeAdapter);
         FlatType.setOnItemSelectedListener(this);
 
         //--------------Selling Price Range DropDown---------------------
-        MySpinnerAdapter SellingPriceRangeAdapter = new MySpinnerAdapter(getApplicationContext(), android.R.layout.simple_spinner_item,
-                Arrays.asList(getResources().getStringArray(R.array.Selling_Price_Range)));
-        Log.d("SELLINGPRICE", String.valueOf(Arrays.asList(getResources().getStringArray(R.array.Selling_Price_Range))));
+        FilterActivity.MySpinnerAdapter SellingPriceRangeAdapter = new FilterActivity.MySpinnerAdapter(getApplicationContext(), android.R.layout.simple_spinner_item,
+                Arrays.asList(getResources().getStringArray(R.array.Selling_Price_Range2)));
+        Log.d("SELLINGPRICE", String.valueOf(Arrays.asList(getResources().getStringArray(R.array.Selling_Price_Range2))));
 //        ArrayAdapter<CharSequence> SellingPriceRangeAdapter = ArrayAdapter.createFromResource(this,
 //                R.array.Selling_Price_Range, android.R.layout.simple_spinner_item);
         SellingPriceRangeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -99,57 +69,57 @@ public class FilterActivity extends AppCompatActivity implements AdapterView.OnI
         Selling_Price_Range.setOnItemSelectedListener(this);
 
         //Remaining Lease Range DropDown-----------------------
-        MySpinnerAdapter RemainingLeaseRangeAdapter = new MySpinnerAdapter(getApplicationContext(), android.R.layout.simple_spinner_item,
-                Arrays.asList(getResources().getStringArray(R.array.Remaining_Lease_Range)));
+        FilterActivity.MySpinnerAdapter FlatSupplyRangeAdapter = new FilterActivity.MySpinnerAdapter(getApplicationContext(), android.R.layout.simple_spinner_item,
+                Arrays.asList(getResources().getStringArray(R.array.Flat_Supply_Range)));
 //        ArrayAdapter<CharSequence> RemainingLeaseRangeAdapter = ArrayAdapter.createFromResource(this,
 //                R.array.Remaining_Lease_Range, android.R.layout.simple_spinner_item);
-        RemainingLeaseRangeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        Remaining_Lease_Range.setAdapter(RemainingLeaseRangeAdapter);
-        Remaining_Lease_Range.setOnItemSelectedListener(this);
+        FlatSupplyRangeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        Flat_Supply_Range.setAdapter(FlatSupplyRangeAdapter);
+        Flat_Supply_Range.setOnItemSelectedListener(this);
 
         //Storey Range DropDown-----------------------
-        MySpinnerAdapter StoreyRangeAdapter = new MySpinnerAdapter(getApplicationContext(), android.R.layout.simple_spinner_item,
-                Arrays.asList(getResources().getStringArray(R.array.Storey_Range)));
+        FilterActivity.MySpinnerAdapter EthnicGroupAdapter = new FilterActivity.MySpinnerAdapter(getApplicationContext(), android.R.layout.simple_spinner_item,
+                Arrays.asList(getResources().getStringArray(R.array.Ethnic_Group)));
 //        ArrayAdapter<CharSequence> StoreyRangeAdapter = ArrayAdapter.createFromResource(this,
 //                R.array.Storey_Range, android.R.layout.simple_spinner_item);
-        StoreyRangeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        Storey_Range.setAdapter(StoreyRangeAdapter);
-        Storey_Range.setOnItemSelectedListener(this);
+        EthnicGroupAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        Ethnic_Group.setAdapter(EthnicGroupAdapter);
+        Ethnic_Group.setOnItemSelectedListener(this);
 
         //Floor Area Square DropDown-----------------------
-        MySpinnerAdapter FloorAreaSquareAdapter = new MySpinnerAdapter(getApplicationContext(), android.R.layout.simple_spinner_item,
-                Arrays.asList(getResources().getStringArray(R.array.Floor_Area_Range)));
+        FilterActivity.MySpinnerAdapter EthnicGroupQuotaAdapter = new FilterActivity.MySpinnerAdapter(getApplicationContext(), android.R.layout.simple_spinner_item,
+                Arrays.asList(getResources().getStringArray(R.array.Ethnic_Group_Quota)));
 //        ArrayAdapter<CharSequence> FloorAreaSquareAdapter = ArrayAdapter.createFromResource(this,
 //                R.array.Floor_Area_Range, android.R.layout.simple_spinner_item);
-        FloorAreaSquareAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        Floor_Area_Range.setAdapter(FloorAreaSquareAdapter);
-        Floor_Area_Range.setOnItemSelectedListener(this);
+        EthnicGroupQuotaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        Ethnic_Group_Quota.setAdapter(EthnicGroupQuotaAdapter);
+        Ethnic_Group_Quota.setOnItemSelectedListener(this);
 
         //Create Button to get to next page
         click =(Button) findViewById(R.id.button);
         click.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(Flat_Type.equals("Choose FlatType"))
+                if(FlatType.equals("Choose FlatType"))
                 {
-                    Toast.makeText(FilterActivity.this,"Please Fill in The Flat Type",Toast.LENGTH_LONG).show();
+                    Toast.makeText(FilterActivitySBF.this,"Please Fill in The Flat Type",Toast.LENGTH_LONG).show();
                 }
                 else{
-                    flatdetail[0] = Flat_Type;
-                    if(Selling_Price_range != null)
-                        flatdetail[1] = Selling_Price_range;
-                    if(Remaining_Lease_range != null)
-                        flatdetail[2] = Remaining_Lease_range;
-                    if(Storey_range != null)
-                        flatdetail[3] = Storey_range;
-                    if(Floor_Area_range != null)
-                        flatdetail[4] = Floor_Area_range;
+                    flatdetail[0] = FlatTypeValue;
+                    if(SellingPriceRange != null)
+                        flatdetail[1] = SellingPriceRange;
+                    if(FlatSupplyRange != null)
+                        flatdetail[2] = FlatSupplyRange;
+                    if(EthnicGroup != null)
+                        flatdetail[3] = EthnicGroup;
+                    if(EthnicGroupQuota != null)
+                        flatdetail[4] = EthnicGroupQuota;
                     Bundle extras = new Bundle();
                     extras.putStringArray("FLAT DETAILS", flatdetail);
                     extras.putString("SearchType", SearchType);
                     extras.putString("UserID", userID);
                     //extras.putString("MORE STUFFS", MORESTUFFS); Can put multiple stuff in extra
-                    Intent intent = new Intent(FilterActivity.this, MapsActivity.class);
+                    Intent intent = new Intent(FilterActivitySBF.this, MapsActivity.class);
                     intent.putExtras(extras);
                     startActivity(intent);
                 }
@@ -164,27 +134,27 @@ public class FilterActivity extends AppCompatActivity implements AdapterView.OnI
         Log.d("FLAT","entered onitemselected class");
         switch (parent.getId()) {
             case R.id.FlatType:
-                Flat_Type = parent.getItemAtPosition(pos).toString();
+                FlatTypeValue = parent.getItemAtPosition(pos).toString();
 //                Toast.makeText(this, Flat_Type, Toast.LENGTH_LONG).show();
-                Log.d("FLAT","FLAT TYPE HAPPENED"+Flat_Type);
+                Log.d("FLAT","FLAT TYPE HAPPENED"+FlatTypeValue);
                 break;
             case R.id.Selling_Price_Range:
-                Selling_Price_range = parent.getItemAtPosition(pos).toString();
+                SellingPriceRange = parent.getItemAtPosition(pos).toString();
 //                Toast.makeText(this, Selling_Price_range, Toast.LENGTH_LONG).show();
                 Log.d("FLAT","SPR HAPPENED");
                 break;
-            case R.id.Remaining_Lease_Range:
-                Remaining_Lease_range = parent.getItemAtPosition(pos).toString();
+            case R.id.Flat_Supply_Range:
+                FlatSupplyRange = parent.getItemAtPosition(pos).toString();
 //                Toast.makeText(this, Remaining_Lease_range, Toast.LENGTH_LONG).show();
                 Log.d("FLAT","RLR HAPPENED");
                 break;
-            case R.id.Storey_Range:
-                Storey_range = parent.getItemAtPosition(pos).toString();
+            case R.id.Ethnic_Group:
+                EthnicGroup = parent.getItemAtPosition(pos).toString();
 //                Toast.makeText(this, Storey_range, Toast.LENGTH_LONG).show();
                 Log.d("FLAT","SR HAPPENED");
                 break;
-            case R.id.Floor_Area_Range:
-                Floor_Area_range = parent.getItemAtPosition(pos).toString();
+            case R.id.Ethnic_Group_Quota:
+                EthnicGroupQuota = parent.getItemAtPosition(pos).toString();
 //                Toast.makeText(this, Floor_Area_range, Toast.LENGTH_LONG).show();
                 Log.d("FLAT","FAR HAPPENED");
                 break;

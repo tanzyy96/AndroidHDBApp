@@ -12,15 +12,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.BtoDetailActivity"></activity>
+        <activity android:name=".activities.FilterActivitySBF"></activity>
+        <activity android:name=".activities.BtoDetailActivity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
         <activity android:name=".activities.FilterActivity" />
-        <activity android:name=".activities.BTO_Past_Activity" />
-        <activity android:name=".activities.BTO_Upcoming_Activity" />
         <activity android:name=".activities.BtoActivity" />
         <activity android:name=".activities.MapsActivity" />
         <activity android:name=".activities.LoginActivity">

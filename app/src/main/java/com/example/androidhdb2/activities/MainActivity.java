@@ -49,8 +49,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case (R.id.sob_button):
                 Toast.makeText(this, "Open SBF page", Toast.LENGTH_SHORT).show();
-                Intent sobIntent = new Intent(this, FilterActivity.class);
+                Intent sobIntent = new Intent(this, FilterActivitySBF.class);
+                sobIntent.putExtra("UserID", userID);
                 sobIntent.putExtra("SearchType", "SBF");
+                startActivity(sobIntent);
                 break;
         }
     }
