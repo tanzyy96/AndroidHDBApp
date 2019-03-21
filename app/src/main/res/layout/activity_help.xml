@@ -8,7 +8,6 @@
 
     <TextView
         android:id="@+id/textView"
-
         android:layout_width="308dp"
         android:layout_height="375dp"
 
