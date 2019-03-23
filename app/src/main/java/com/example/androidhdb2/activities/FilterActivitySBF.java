@@ -104,6 +104,9 @@ public class FilterActivitySBF extends AppCompatActivity implements AdapterView.
                 {
                     Toast.makeText(FilterActivitySBF.this,"Please Fill in The Flat Type",Toast.LENGTH_LONG).show();
                 }
+                if(EthnicGroupQuota.equals("Select Ethnic Group Quota Range") && !EthnicGroup.equals("Choose Ethnic Group") ||
+                        !EthnicGroupQuota.equals("Select Ethnic Group Quota Range") && EthnicGroup.equals("Choose Ethnic Group"))
+                    Toast.makeText(FilterActivitySBF.this, "Both Ethnic Group & Quota must be selected.", Toast.LENGTH_LONG).show();
                 else{
                     flatdetail[0] = FlatTypeValue;
                     if(SellingPriceRange != null)
@@ -119,7 +122,7 @@ public class FilterActivitySBF extends AppCompatActivity implements AdapterView.
                     extras.putString("SearchType", SearchType);
                     extras.putString("UserID", userID);
                     //extras.putString("MORE STUFFS", MORESTUFFS); Can put multiple stuff in extra
-                    Intent intent = new Intent(FilterActivitySBF.this, MapsActivity.class);
+                    Intent intent = new Intent(FilterActivitySBF.this, SBFDetailActivity.class);
                     intent.putExtras(extras);
                     startActivity(intent);
                 }

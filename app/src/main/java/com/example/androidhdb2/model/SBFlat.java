@@ -1,13 +1,16 @@
 package com.example.androidhdb2.model;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SBFlat extends Flat {
+public class SBFlat extends Flat implements Serializable {
     private int flatSupply;
     private int price;
     private Map<String, Integer> ethnicQuota;
     private String region;
+
+    public SBFlat(){}
 
     public SBFlat(String flatID, String location, String flatSize, int price, int flatSupply, Map<String, Integer> ethnicQuota, String region) {
         super(flatID, location, flatSize);
