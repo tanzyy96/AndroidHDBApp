@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.SBFDetailActivity"></activity>
+        <activity android:name=".activities.HelpActivity"></activity>
+        <activity android:name=".activities.SBFDetailActivity" />
         <activity android:name=".activities.FilterActivitySBF" />
         <activity android:name=".activities.BtoDetailActivity" />
 
