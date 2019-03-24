@@ -13,6 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".activities.HelpActivity"></activity>
+        <activity android:name=".activities.BookMarkActivity"/>
         <activity android:name=".activities.SBFDetailActivity" />
         <activity android:name=".activities.FilterActivitySBF" />
         <activity android:name=".activities.BtoDetailActivity" />

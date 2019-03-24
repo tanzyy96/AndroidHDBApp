@@ -14,7 +14,7 @@ import com.example.androidhdb2.R;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     Button bto_button, resale_button, sob_button;
-    ImageButton help_button;
+    ImageButton help_button , bookmark_button;
     String userID;
 
 
@@ -28,11 +28,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         resale_button = findViewById(R.id.resale_button);
         sob_button = findViewById(R.id.sob_button);
         help_button = findViewById(R.id.help_button);
+        bookmark_button = findViewById(R.id.bookmark_button);
 
         bto_button.setOnClickListener(this);
         resale_button.setOnClickListener(this);
         sob_button.setOnClickListener(this);
         help_button.setOnClickListener(this);
+        bookmark_button.setOnClickListener(this);
 
     }
 
@@ -62,6 +64,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Toast.makeText(this, "Open Help page", Toast.LENGTH_SHORT).show();
                 Intent helpIntent = new Intent(this, HelpActivity.class);
                 startActivity(helpIntent);
+                break;
+            case (R.id.bookmark_button):
+                Toast.makeText(this, "Open Bookmark page", Toast.LENGTH_SHORT).show();
+                Intent bookmarkIntent = new Intent(this, BookMarkActivity.class);
+                bookmarkIntent.putExtra("UserID", userID);
+                startActivity(bookmarkIntent);
                 break;
         }
     }

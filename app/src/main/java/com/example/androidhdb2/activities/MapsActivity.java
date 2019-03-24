@@ -124,7 +124,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public boolean onClusterItemClick(FlatMarker flatMarker) {
         clickFlatMarker = flatMarker;
         Toast.makeText(this, "Flat Clicked!", Toast.LENGTH_SHORT).show();
-        return true;
+        return false;
     }
 
     public void clickMarker(View v) {
@@ -1042,7 +1042,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-    private void refreshMarkers(ArrayList<? extends Flat> flatArrayList){   // use of wildcard
+    private void refreshMarkers(ArrayList<ResaleFlat> flatArrayList){   // use of wildcard
         if(mClusterManager== null){
             mClusterManager = new ClusterManager<>(this.getApplicationContext(),mMap);
         }
@@ -1058,16 +1058,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // test a custom marker
 
-        String snippet = "Flat ABCXYZ \nType X-room\nHello World";
+
         int avatar = R.drawable.flatava;
-//        FlatMarker miranaMarker = new FlatMarker(new LatLng(1.347687, 103.712949),"Chinam Headquarter",snippet,avatar);
-//        mClusterManager.addItem(miranaMarker);
-//        mClusterMarkers.add(miranaMarker);
-//        mClusterManager.cluster();
         mClusterManager.clearItems();
         mClusterMarkers.clear();
-        for (Flat flat:flatArrayList) {
+        for (ResaleFlat flat:flatArrayList) {
             LatLng ll = getLLFromAddress(this, flat.getLocation());
+            String snippet = flat.getFlatSize() + "\nPrice: " + flat.getPrice() + "\nArea: " + flat.getFloorArea();
             FlatMarker fm = new FlatMarker(ll, flat.getLocation(),snippet,avatar, flat);
             mClusterManager.addItem(fm);
             mClusterMarkers.add(fm);
