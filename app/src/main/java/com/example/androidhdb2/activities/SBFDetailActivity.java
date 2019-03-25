@@ -35,14 +35,14 @@ public class SBFDetailActivity extends AppCompatActivity {
     private TextView progressText;
     private final String TAG = "SBFDETAIL";
     private FirebaseFirestore db;
-
+    private String userid;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sbfdetail);
         Intent intent = getIntent();
+        userid = intent.getStringExtra("UserID");
         String[] detail = intent.getStringArrayExtra("FLAT DETAILS");
-        String userid = intent.getStringExtra("UserID");
         ArrayList results = SBFilter.filterFlats(detail);
         Log.d(TAG, String.valueOf(results));
 
@@ -138,7 +138,7 @@ public class SBFDetailActivity extends AppCompatActivity {
                 progressBar.setVisibility(View.GONE);
                 progressText.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.VISIBLE);
-                mAdapter = new SBFAdapter(getApplicationContext(), flatArrayList);
+                mAdapter = new SBFAdapter(getApplicationContext(), flatArrayList , userid);
                 recyclerView.setAdapter(mAdapter);
             }
         });

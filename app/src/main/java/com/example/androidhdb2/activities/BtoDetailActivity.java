@@ -40,6 +40,7 @@ public class BtoDetailActivity extends AppCompatActivity {
     private TextView progressText;
     private final String TAG = "BTODETAIL";
     private FirebaseFirestore db;
+    private String userid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +48,7 @@ public class BtoDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_bto_detail);
         Intent intent = getIntent();
         String btotype = intent.getStringExtra("BtoType");
+        userid = intent.getStringExtra("UserID");
         Log.d(TAG, btotype);
         progressBar = findViewById(R.id.pBar);
         progressText = findViewById(R.id.pText);
@@ -88,7 +90,7 @@ public class BtoDetailActivity extends AppCompatActivity {
                 progressBar.setVisibility(View.GONE);
                 progressText.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.VISIBLE);
-                mAdapter = new UpcomingBtoAdapter(getApplicationContext(), flatArrayList);
+                mAdapter = new UpcomingBtoAdapter(getApplicationContext(), flatArrayList,userid);
                 recyclerView.setAdapter(mAdapter);
             }
         });
@@ -112,7 +114,7 @@ public class BtoDetailActivity extends AppCompatActivity {
                 progressBar.setVisibility(View.GONE);
                 progressText.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.VISIBLE);
-                mAdapter = new BtoAdapter(getApplicationContext(), flatArrayList);
+                mAdapter = new BtoAdapter(getApplicationContext(), flatArrayList , userid);
                 recyclerView.setAdapter(mAdapter);
             }
         });

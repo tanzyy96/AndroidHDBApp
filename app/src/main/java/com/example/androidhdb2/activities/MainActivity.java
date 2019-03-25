@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case (R.id.bto_button):
                 Toast.makeText(this, "Open BTO page", Toast.LENGTH_SHORT).show();
                 Intent btoIntent = new Intent(this, BtoActivity.class);
+                btoIntent.putExtra("UserID",userID);
                 startActivity(btoIntent);
                 break;
             case (R.id.resale_button):

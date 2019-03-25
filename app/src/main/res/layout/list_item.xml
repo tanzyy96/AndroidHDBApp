@@ -36,4 +36,19 @@
         android:padding="5dp"
         android:text="Details"
         android:textSize="12dp"/>
+
+    <ImageView
+        android:id="@+id/bookmarkx"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/itemName"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="337dp"
+        android:layout_marginTop="-14dp"
+        android:layout_marginBottom="29dp"
+        android:fontFamily="@font/playfair_display"
+        android:padding="5dp"
+        android:src="@drawable/round_bookmarks_24"
+        />
 </RelativeLayout>

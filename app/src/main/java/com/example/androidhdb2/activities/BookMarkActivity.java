@@ -51,7 +51,6 @@ public class BookMarkActivity extends AppCompatActivity {
         progressText.setVisibility(View.VISIBLE);
 
         displayBookmark();
-        Toast.makeText(this,"Hold a bookmark to delete it",Toast.LENGTH_SHORT).show();
     }
 
     private void displayBookmark(){
