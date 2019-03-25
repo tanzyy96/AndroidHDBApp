@@ -1,5 +1,6 @@
 package com.example.androidhdb2.activities;
 
+import android.app.Activity;
 import android.content.Context;
 import java.lang.*;
 import android.content.Intent;
@@ -14,6 +15,9 @@ import android.location.Geocoder;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.SuperscriptSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -60,6 +64,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
     private String userid;
+    private SupportMapFragment mapFragment;
 
     private static final int STROKE_WIDTH = 4;
     private static final int FILL_COLOR = 0x20ffff00;
@@ -86,6 +91,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     TextView price;
     TextView details;
 
+    // For loading bar
+    private ProgressBar pBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,19 +119,29 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
         setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+        mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
         LinearLayout bottomSheetLayout = findViewById(R.id.bottom_sheet);
         BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetLayout);
-        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+
+        pBar = findViewById(R.id.progressMaps);
+        pBar.setVisibility(View.GONE);
+
+        location = findViewById(R.id.bottomLocation);
+        price = findViewById(R.id.bottomPrice);
+        details = findViewById(R.id.bottomDetails);
     }
 
     @Override
     public boolean onClusterItemClick(FlatMarker flatMarker) {
         clickFlatMarker = flatMarker;
-        Toast.makeText(this, "Flat Clicked!", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "Flat Clicked!", Toast.LENGTH_SHORT).show();
+        // Update Bottom Sheet
+        Flat flat = flatMarker.getFlat();
+        updateBottomSheet(flat);
         return false;
     }
 
@@ -133,6 +151,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 if (clickFlatMarker == null) {
                     Toast.makeText(this, "No flat is chosen!", Toast.LENGTH_SHORT).show();}
                 else {
+                    // Flat bookmarking
                     Flat flat = clickFlatMarker.getFlat();
                     User user = UserController.importUser(this, getFilesDir(), userid);
                     Log.d("UserController", String.valueOf(user));
@@ -1000,6 +1019,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setOnPolygonClickListener(new GoogleMap.OnPolygonClickListener() {
             @Override
             public void onPolygonClick(Polygon polygon) {
+                Toast.makeText(MapsActivity.this, "Loading...", Toast.LENGTH_SHORT).show();
                 if (pre_region != null){
                     if (!pre_region.equals(polygon)) {
                         pre_region.setFillColor(FILL_COLOR);
@@ -1007,6 +1027,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     } else return;
                 } else pre_region = polygon;
                 polygon.setFillColor(0x0);
+
+//                mapFragment.getView().setVisibility(View.GONE);
 
 
                 double lat = 0;
@@ -1023,11 +1045,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat,lng), 13.2f));
                 region = hm.get(polygon);
                 ArrayList<ResaleFlat> resaleFlatArrayList = CallResaleFlatController();
-
-
                 Log.d("RESALE", String.valueOf(resaleFlatArrayList));
                 for(int i = 0; i<resaleFlatArrayList.size(); i++)
                     Log.d("RESALE"+String.valueOf(i), String.valueOf(resaleFlatArrayList.get(i)));
+//                mapFragment.getView().setVisibility(View.VISIBLE);
+//                pBar.setVisibility(View.GONE);
                 refreshMarkers(resaleFlatArrayList);
 
             }
@@ -1108,5 +1130,37 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         return p1;
     }
+
+    public void updateBottomSheet(Flat flat) {
+        // Popup bottom sheet
+        LinearLayout bottomSheetLayout = findViewById(R.id.bottom_sheet);
+        BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetLayout);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+
+        location.setText(flat.getLocation());
+        if (ResaleFlat.class.isInstance(flat)) {
+            String s = String.valueOf(((ResaleFlat) flat).getPrice());
+            price.setText('$'+s);
+            details.setText("Flat Type: "+ flat.getFlatSize()+'\n' +
+                    "Storey Range: " + ((ResaleFlat) flat).getStorey() + '\n' +
+                    "Floor Area: "+((ResaleFlat) flat).getFloorArea() + " m2" + '\n' +
+                    "Remaining Lease: "+((ResaleFlat) flat).getRemainingLease() + " years");
+        }
+
+    }
+
+//    public void loadingBottomSheet(boolean start){
+//        LinearLayout bottomSheetLayout = findViewById(R.id.bottom_sheet);
+//        BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetLayout);
+//
+//
+//        if (start) {
+//            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+//            location.setText("FINDING YOUR FLATS...");
+//            price.setText("");
+//        } else {
+//            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+//            }
+//    }
 
 }

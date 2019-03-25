@@ -33,6 +33,7 @@ public class ResaleAPI {
     String[] Database_Remaining_Lease_range;
     String[] Database_Selling_Price_range;
     String[] Database_Storey_range;
+    Boolean lock=false;
 
     public ResaleAPI(String[]database_Flat_Type, String[] database_Selling_Price_range, String[] database_Remaining_Lease_range, String[] database_Storey_range, String[] database_Floor_Area_range) {
         Database_Flat_Type = database_Flat_Type;
@@ -95,6 +96,8 @@ public class ResaleAPI {
                             Log.d("RESALEAPI", rf.toString());
                             ResaleFlatArray.add(rf);
                         }
+                        lock=true;
+                        return;
 
 
 
@@ -110,7 +113,9 @@ public class ResaleAPI {
             }
         });
         try {
-            TimeUnit.SECONDS.sleep(5);
+            // Wait for flatarray to load
+            while (!lock)
+                TimeUnit.MILLISECONDS.sleep(10);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

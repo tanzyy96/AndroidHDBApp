@@ -1,4 +1,4 @@
-package com.example.androidhdb2.activities;
+package com.example.androidhdb2.utils;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -10,12 +10,10 @@ import android.widget.TextView;
 
 import com.example.androidhdb2.R;
 import com.example.androidhdb2.model.SBFlat;
-import com.example.androidhdb2.utils.BtoAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class SBFAdapter extends RecyclerView.Adapter<SBFAdapter.ViewHolder> {
     private List<SBFlat> sbFlatList;
