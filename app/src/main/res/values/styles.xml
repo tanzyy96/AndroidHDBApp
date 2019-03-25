@@ -13,7 +13,7 @@
 
     <style name="Button" parent="Widget.MaterialComponents.Button">
         <item name="android:textColor">@color/white</item>
-        <item name="backgroundTint">?attr/colorPrimary</item>
+        <item name="backgroundTint">@color/transparent</item>
         <item name="android:fontFamily">@font/playfair_display</item>
     </style>
 
