@@ -49,16 +49,25 @@ public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkAdapter.ViewHo
 
         viewHolder.tvName.setText(flat.getLocation());
         if (flat instanceof SBFlat){
-            viewHolder.tvDetails.setText(flat.getFlatSize() + "\n" + "Flat Type: Sale of Balance Flat");
+            viewHolder.tvDetails.setText("Flat Type: Sale of Balance Flat" + '\n' +
+                            flat.getFlatSize() + "\n" +
+                            "Flat Supply: " + ((SBFlat)flat).getFlatSupply() + '\n' +
+                            "Ethnic Quota: " + ((SBFlat)flat).getEthnicQuota());
         }
         else if (flat instanceof PastBtoFlat){
-            viewHolder.tvDetails.setText(flat.getFlatSize() + "\n" + "Flat Type: Past-launch BTO Flat");
+            viewHolder.tvDetails.setText("Flat Type: Past-launch BTO Flat" + '\n' +
+                            ((PastBtoFlat)flat).getPrice() + '\n' +
+                    flat.getFlatSize() + "\n" + ((PastBtoFlat)flat).getRegion());
         }
         else if (flat instanceof UpcomingBtoFlat){
-            viewHolder.tvDetails.setText(flat.getFlatSize() + "\n" + "Flat Type: Upcoming-launch BTO Flat");
+            viewHolder.tvDetails.setText( "Flat Type: Upcoming-launch BTO Flat" + '\n' + "Total:" + ((UpcomingBtoFlat) flat).getTotal());
         }
         else if (flat instanceof ResaleFlat){
-            viewHolder.tvDetails.setText(flat.getFlatSize() + "\n" + "Flat Type: Resale Flat");
+            viewHolder.tvDetails.setText("Flat Type: Resale Flat" + '\n' +
+                    flat.getFlatSize() + "\n" +
+                    "Storey Range: " + ((ResaleFlat) flat).getStorey() + '\n' +
+                    "Floor Area: "+((ResaleFlat) flat).getFloorArea() + " m2" + '\n' +
+                    "Remaining Lease: "+((ResaleFlat) flat).getRemainingLease() + " years");
         }
 
         // insert fragment for image here

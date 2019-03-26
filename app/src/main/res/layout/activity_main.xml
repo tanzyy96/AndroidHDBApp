@@ -47,7 +47,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/bookmark" />
+        app:srcCompat="@drawable/round_bookmarks_24" />
 
     <TextView
         android:id="@+id/textView"

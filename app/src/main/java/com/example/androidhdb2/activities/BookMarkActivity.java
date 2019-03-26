@@ -57,6 +57,8 @@ public class BookMarkActivity extends AppCompatActivity {
         progressBar.setVisibility(View.VISIBLE);
         User user = UserController.importUser(this, getFilesDir(), userid);
         ArrayList<Bookmark> bookmarkArrayList = user.getBookmarkList();
+        if (bookmarkArrayList.size()==0)
+            Toast.makeText(this, "No bookmarks!", Toast.LENGTH_SHORT).show();
 
         progressBar.setVisibility(View.GONE);
         progressText.setVisibility(View.GONE);
