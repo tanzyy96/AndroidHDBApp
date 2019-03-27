@@ -12,19 +12,18 @@
         android:layout_alignParentLeft="true"
         android:fontFamily="@font/playfair_display_black"
         android:text="itemName"
-        android:textSize="15dp" />
+        android:textSize="13dp" />
 
     <TextView
         android:id="@+id/itemPrice"
+        android:fontFamily="@font/playfair_display"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/itemName"
         android:layout_alignParentRight="true"
         android:layout_marginEnd="9dp"
-        android:fontFamily="@font/playfair_display"
+        android:textSize="15dp"
         android:gravity="right"
-        android:text="Price"
-        android:textSize="15dp" />
+        android:text="Price" />
 
     <TextView
         android:id="@+id/itemDetails"
@@ -46,9 +45,9 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:layout_marginLeft="337dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginRight="6dp"
-        android:layout_marginBottom="4dp"
+        android:layout_marginTop="13dp"
+        android:layout_marginRight="2dp"
+        android:layout_marginBottom="7dp"
         android:fontFamily="@font/playfair_display"
         android:padding="5dp"
         android:src="@drawable/round_bookmarks_24" />

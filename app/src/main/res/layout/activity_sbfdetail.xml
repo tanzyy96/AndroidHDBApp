@@ -13,7 +13,7 @@
         android:layout_height="match_parent"
         android:scrollbars='vertical'
         android:padding="16dp"
-        tools:listitem="@layout/list_item"
+        tools:listitem="@layout/list_item_sbf"
         tools:itemCount="5"/>
 
     <ProgressBar

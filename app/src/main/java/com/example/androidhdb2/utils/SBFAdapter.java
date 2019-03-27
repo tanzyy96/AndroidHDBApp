@@ -44,7 +44,7 @@ public class SBFAdapter extends RecyclerView.Adapter<SBFAdapter.ViewHolder> {
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         LayoutInflater inflater = LayoutInflater.from(mContext);
-        View itemView = inflater.inflate(R.layout.list_item, viewGroup, false);
+        View itemView = inflater.inflate(R.layout.list_item_sbf, viewGroup, false);
         SBFAdapter.ViewHolder vh = new SBFAdapter.ViewHolder(itemView);
         return vh;
     }
