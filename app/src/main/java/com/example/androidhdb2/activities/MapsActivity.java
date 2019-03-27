@@ -85,6 +85,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     String storeyRange;
     String areaRange;
     String region;
+    FlatController fc = new FlatController();
+    ArrayList<ResaleFlat> resaleFlatArrayList = new ArrayList<ResaleFlat>();
 
     // For BottomSheet
     TextView location;
@@ -112,6 +114,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             storeyRange = flatdetail[3];
         if(flatdetail[4] != null)
             areaRange = flatdetail[4];
+
+        resaleFlatArrayList = fc.getResale(getResources().getStringArray(R.array.FlatType),
+                getResources().getStringArray(R.array.Selling_Price_Range),
+                getResources().getStringArray(R.array.Remaining_Lease_Range),
+                getResources().getStringArray(R.array.Storey_Range),
+                getResources().getStringArray(R.array.Floor_Area_Range),
+                flatType, priceRange, leaseRange, storeyRange, areaRange);
 
         for(int i = 0; i<flatdetail.length;i++)
         {
@@ -1045,11 +1054,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat,lng), 13.2f));
                 region = hm.get(polygon);
-                ArrayList<ResaleFlat> resaleFlatArrayList = CallResaleFlatController();
-                Log.d("RESALE", String.valueOf(resaleFlatArrayList));
-                for(int i = 0; i<resaleFlatArrayList.size(); i++)
-                    Log.d("RESALE"+String.valueOf(i), String.valueOf(resaleFlatArrayList.get(i)));
-                refreshMarkers(resaleFlatArrayList);
+                ArrayList<ResaleFlat> resaleList = fc.filterResaleRegion(resaleFlatArrayList, region);
+                Log.d("RESALE", String.valueOf(resaleList));
+                for(int i = 0; i<resaleList.size(); i++)
+                    Log.d("RESALE"+String.valueOf(i), String.valueOf(resaleList.get(i)));
+                refreshMarkers(resaleList);
 
             }
         });
@@ -1102,7 +1111,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 getResources().getStringArray(R.array.Remaining_Lease_Range),
                 getResources().getStringArray(R.array.Storey_Range),
                 getResources().getStringArray(R.array.Floor_Area_Range),
-                flatType, priceRange, leaseRange, storeyRange, areaRange, region);
+                flatType, priceRange, leaseRange, storeyRange, areaRange);
         return l;
     }
 

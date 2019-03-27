@@ -5,6 +5,7 @@ public class ResaleFlat extends Flat {
     private String storey;
     private float floorArea;
     private int price;
+    private String town;
 
     public ResaleFlat(String flatID, String location, String flatSize, int price, int remainingLease, String storey, float floorArea) {
         super(flatID, location, flatSize);
@@ -13,6 +14,10 @@ public class ResaleFlat extends Flat {
         this.storey = storey;
         this.floorArea = floorArea;
     }
+
+    public void setTown(String town) { this.town = town; }
+
+    public String getTown() {return town; }
 
     public int getPrice() {
         return price;
@@ -33,6 +38,7 @@ public class ResaleFlat extends Flat {
     @Override
     public String toString() {
         return "ResaleFlat{" +
+                "town="+ getTown() +
                 "location=" + getLocation() +
                 "remainingLease=" + remainingLease +
                 ", storey='" + storey + '\'' +
