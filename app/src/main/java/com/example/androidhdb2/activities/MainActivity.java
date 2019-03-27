@@ -42,32 +42,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case (R.id.bto_button):
-                Toast.makeText(this, "Open BTO page", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "Open BTO page", Toast.LENGTH_SHORT).show();
                 Intent btoIntent = new Intent(this, BtoActivity.class);
                 btoIntent.putExtra("UserID",userID);
                 startActivity(btoIntent);
                 break;
             case (R.id.resale_button):
-                Toast.makeText(this, "Open Resale page", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "Open Resale page", Toast.LENGTH_SHORT).show();
                 Intent resaleIntent = new Intent(this, FilterActivity.class);
                 resaleIntent.putExtra("UserID", userID);
                 resaleIntent.putExtra("SearchType", "Resale");
                 startActivity(resaleIntent);
                 break;
             case (R.id.sob_button):
-                Toast.makeText(this, "Open SBF page", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "Open SBF page", Toast.LENGTH_SHORT).show();
                 Intent sobIntent = new Intent(this, FilterActivitySBF.class);
                 sobIntent.putExtra("UserID", userID);
                 sobIntent.putExtra("SearchType", "SBF");
                 startActivity(sobIntent);
                 break;
             case (R.id.help_button):
-                Toast.makeText(this, "Open Help page", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "Open Help page", Toast.LENGTH_SHORT).show();
                 Intent helpIntent = new Intent(this, HelpActivity.class);
                 startActivity(helpIntent);
                 break;
             case (R.id.bookmark_button):
-                Toast.makeText(this, "Open Bookmark page", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "Open Bookmark page", Toast.LENGTH_SHORT).show();
                 Intent bookmarkIntent = new Intent(this, BookMarkActivity.class);
                 bookmarkIntent.putExtra("UserID", userID);
                 startActivity(bookmarkIntent);

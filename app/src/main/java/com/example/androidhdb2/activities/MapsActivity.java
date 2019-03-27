@@ -1027,6 +1027,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     } else return;
                 } else pre_region = polygon;
                 polygon.setFillColor(0x0);
+                ;
 
 //                mapFragment.getView().setVisibility(View.GONE);
 
@@ -1048,8 +1049,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Log.d("RESALE", String.valueOf(resaleFlatArrayList));
                 for(int i = 0; i<resaleFlatArrayList.size(); i++)
                     Log.d("RESALE"+String.valueOf(i), String.valueOf(resaleFlatArrayList.get(i)));
-//                mapFragment.getView().setVisibility(View.VISIBLE);
-//                pBar.setVisibility(View.GONE);
                 refreshMarkers(resaleFlatArrayList);
 
             }
@@ -1149,18 +1148,5 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
-//    public void loadingBottomSheet(boolean start){
-//        LinearLayout bottomSheetLayout = findViewById(R.id.bottom_sheet);
-//        BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetLayout);
-//
-//
-//        if (start) {
-//            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-//            location.setText("FINDING YOUR FLATS...");
-//            price.setText("");
-//        } else {
-//            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-//            }
-//    }
 
 }

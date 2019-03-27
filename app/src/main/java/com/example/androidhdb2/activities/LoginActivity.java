@@ -83,8 +83,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onStart() {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
-//        FirebaseUser currentUser = mAuth.getCurrentUser();
-//        updateUI(currentUser);
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        updateUI(currentUser);
     }
 
     private void signIn() {
@@ -161,7 +161,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private void updateUI(FirebaseUser account) {
         if (account != null) {
-            Toast.makeText(this, "Signed in as " + account.getDisplayName(), Toast.LENGTH_SHORT).show();
+            if (account.getDisplayName() != null)
+                Toast.makeText(this, "Signed in as " + account.getDisplayName(), Toast.LENGTH_SHORT).show();
+            else
+                Toast.makeText(this, "Signed in as Guest", Toast.LENGTH_SHORT).show();
 //            checkFirebaseUser(account);
 
 //            PastBtoDataProvider provider = new PastBtoDataProvider();
@@ -179,13 +182,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onClick(View v) {
+        Toast.makeText(this, "Signing in", Toast.LENGTH_SHORT).show();
         switch (v.getId()) {
             case R.id.sign_in_button:
-                Toast.makeText(LoginActivity.this, "Signing in", Toast.LENGTH_SHORT).show();
                 signIn();
                 break;
             case R.id.guestBtn:
-                Toast.makeText(this, "Sign in as Guest", Toast.LENGTH_SHORT).show();
                 signInAnonymously();
                 break;
         }

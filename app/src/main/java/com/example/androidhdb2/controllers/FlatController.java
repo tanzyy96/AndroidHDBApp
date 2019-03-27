@@ -20,15 +20,56 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class FlatController {
     private String TAG = "FLATCONTROLLER";
 
 //
-//    public ArrayList<SBFlat> getSBF(String flatType, int priceRange, String flatSupplyRange, String ethnicity, String region) {
-//
-//    }
+    public List<SBFlat> getSBF(List<SBFlat> flatArrayList, ArrayList results) {
+        String TAG = "Flat Controller";
+        String flatType;
+        String[] priceRange = new String[2];
+        String[] flatSupplyRange = new String[2];
+        String ethnicGroup="";
+        String[] ethnicGroupQuota = new String[2];
+
+        flatType = (String) results.get(0);
+        if (results.get(1) != null) {
+            priceRange = (String[]) results.get(1);
+            Log.d(TAG, priceRange[0]);
+        }
+        if (results.get(2) != null)
+            flatSupplyRange = (String[]) results.get(2);
+        if (results.get(3)!=null) {
+            ethnicGroup = (String) results.get(3);
+            ethnicGroupQuota = (String[]) results.get(4);
+        }
+        Log.d(TAG, flatType);
+
+        String finalethnicGroup = ethnicGroup;
+        String[] finalPriceRange = priceRange;
+        Log.d(TAG, "fPR"+finalPriceRange);
+        String[] finalFlatSupplyRange = flatSupplyRange;
+        String[] finalEthnicGroupQuota = ethnicGroupQuota;
+
+        for (SBFlat flat : flatArrayList) {
+            if (!compare_FT(flat, flatType))
+                flatArrayList.remove(flat);
+            if (finalPriceRange[0] != null) {
+                if (!compare_PR(flat, Integer.parseInt(finalPriceRange[0]), Integer.parseInt(finalPriceRange[1])))
+                    flatArrayList.remove(flat);
+            }
+            if (finalFlatSupplyRange[0] != null && !compare_SR(flat, Integer.parseInt(finalFlatSupplyRange[0]), Integer.parseInt(finalFlatSupplyRange[1]))) {
+                flatArrayList.remove(flat);
+            }
+            if (finalethnicGroup != "" && !compare_EG(flat, finalethnicGroup, Integer.parseInt(finalEthnicGroupQuota[0]), Integer.parseInt(finalEthnicGroupQuota[1]))) {
+                flatArrayList.remove(flat);
+            }
+        }
+        return flatArrayList;
+    }
 //
     public ArrayList<ResaleFlat> getResale(String[] flatList, String[] priceList, String[] leaseList, String[] storeyList, String[] areaList,
                                            String flatType, String priceRange, String remainingLeaseRange, String storeyRange, String floorAreaRange, String region) {
@@ -42,21 +83,28 @@ public class FlatController {
 //
 //    }
 
-//    private class AsyncList extends AsyncTask<Void, Void, ArrayList<PastBtoFlat>> {
-//        private static final String TAG = "AsyncTask" ;
-//        ArrayList<PastBtoFlat> btoFlatArrayList = new ArrayList<PastBtoFlat>();
-//        FirebaseFirestore db = FirebaseFirestore.getInstance();
-//
-//
-//        @Override
-//        protected ArrayList<PastBtoFlat> doInBackground(Void... voids) {
-//
-//        }
-//
-//        @Override
-//        protected void onPostExecute(ArrayList<PastBtoFlat> pastBtoFlats) {
-//            flatArrayList = pastBtoFlats;
-//        }
-//    }
+    public boolean compare_FT(SBFlat flat, String ft) {
+        if (flat.getFlatSize().contains(ft))
+            return true;
+        return false;
+    }
+
+    public boolean compare_SR(SBFlat flat, int min, int max) {
+        if (flat.getFlatSupply() > max || flat.getFlatSupply()<min) {
+            return false;
+        } return true;
+    }
+
+    public boolean compare_PR(SBFlat flat, int min, int max) {
+        if (flat.getPrice() > max || flat.getPrice() < min)
+            return false;
+        return true;
+    }
+
+    public boolean compare_EG(SBFlat flat, String ethnicGroup, int min, int max) {
+        if (flat.getEthnicQuota(ethnicGroup) < min || flat.getEthnicQuota(ethnicGroup) > max)
+            return false;
+        return true;
+    }
 
 }

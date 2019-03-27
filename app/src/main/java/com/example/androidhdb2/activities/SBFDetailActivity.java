@@ -13,6 +13,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.androidhdb2.R;
+import com.example.androidhdb2.controllers.FlatController;
 import com.example.androidhdb2.model.SBFlat;
 import com.example.androidhdb2.utils.SBFAdapter;
 import com.example.androidhdb2.utils.SBFilter;
@@ -73,41 +74,9 @@ public class SBFDetailActivity extends AppCompatActivity {
 
     private void getSBFlats(ArrayList results) {
 
-        String flatType;
-        String[] priceRange = new String[2];
-        String[] flatSupplyRange = new String[2];
-        String ethnicGroup="";
-        String[] ethnicGroupQuota = new String[2];
-
-        flatType = (String) results.get(0);
-        if (results.get(1) != null) {
-            priceRange = (String[]) results.get(1);
-            Log.d(TAG, priceRange[0]);
-        }
-        if (results.get(2) != null)
-            flatSupplyRange = (String[]) results.get(2);
-        if (results.get(3)!=null) {
-            ethnicGroup = (String) results.get(3);
-            ethnicGroupQuota = (String[]) results.get(4);
-        }
-        Log.d(TAG, flatType);
-
         progressBar.setVisibility(View.VISIBLE);
         List<SBFlat> flatArrayList = new CopyOnWriteArrayList<SBFlat>();
         CollectionReference colRef = db.collection("SBFlat");
-//        Query query = colRef.whereEqualTo("flatSize",flatType);
-//        if (priceRange!=null && !TextUtils.isEmpty(priceRange[0]) && TextUtils.isDigitsOnly(priceRange[0])) {
-//            query = query.whereGreaterThanOrEqualTo("price",Integer.parseInt(priceRange[0]));
-//            if (priceRange[1]!=null) {
-//                query = query.whereLessThanOrEqualTo("price",Integer.parseInt(priceRange[1]));
-//            }
-//        }
-
-        String finalethnicGroup = ethnicGroup;
-        String[] finalPriceRange = priceRange;
-        Log.d(TAG, "fPR"+finalPriceRange);
-        String[] finalFlatSupplyRange = flatSupplyRange;
-        String[] finalEthnicGroupQuota = ethnicGroupQuota;
         colRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -119,54 +88,20 @@ public class SBFDetailActivity extends AppCompatActivity {
                     }
                 }
                 Log.d(TAG, String.valueOf(flatArrayList)+flatArrayList.size());
-                for (SBFlat flat : flatArrayList) {
-                    if (!compare_FT(flat, flatType))
-                        flatArrayList.remove(flat);
-                    if (finalPriceRange[0] !=null){
-                        if(!compare_PR(flat,Integer.parseInt(finalPriceRange[0]), Integer.parseInt(finalPriceRange[1])))
-                            flatArrayList.remove(flat);
-                    }
-                    if (finalFlatSupplyRange[0] != null && !compare_SR(flat,Integer.parseInt(finalFlatSupplyRange[0]), Integer.parseInt(finalFlatSupplyRange[1]))){
-                            flatArrayList.remove(flat);
-                    }
-                    if (finalethnicGroup!="" && !compare_EG(flat, finalethnicGroup, Integer.parseInt(finalEthnicGroupQuota[0]), Integer.parseInt(finalEthnicGroupQuota[1]))) {
-                            flatArrayList.remove(flat);
-                    }
-                }
-                Log.d(TAG, String.valueOf(flatArrayList)+flatArrayList.size());
+                FlatController fc = new FlatController();
+                List<SBFlat> flatResults = new ArrayList<SBFlat>();
+                flatResults = fc.getSBF(flatArrayList, results);
 
                 progressBar.setVisibility(View.GONE);
                 progressText.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.VISIBLE);
-                mAdapter = new SBFAdapter(getApplicationContext(), flatArrayList , userid);
+                mAdapter = new SBFAdapter(getApplicationContext(), flatResults , userid);
                 recyclerView.setAdapter(mAdapter);
             }
         });
     }
 
-    public boolean compare_FT(SBFlat flat, String ft) {
-        if (flat.getFlatSize().contains(ft))
-            return true;
-        return false;
-    }
 
-    public boolean compare_SR(SBFlat flat, int min, int max) {
-        if (flat.getFlatSupply() > max || flat.getFlatSupply()<min) {
-            return false;
-        } return true;
-    }
-
-    public boolean compare_PR(SBFlat flat, int min, int max) {
-        if (flat.getPrice() > max || flat.getPrice() < min)
-            return false;
-        return true;
-    }
-
-    public boolean compare_EG(SBFlat flat, String ethnicGroup, int min, int max) {
-        if (flat.getEthnicQuota(ethnicGroup) < min || flat.getEthnicQuota(ethnicGroup) > max)
-            return false;
-        return true;
-    }
 
 
 }
