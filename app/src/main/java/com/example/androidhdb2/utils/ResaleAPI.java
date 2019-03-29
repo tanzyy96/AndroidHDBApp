@@ -219,7 +219,7 @@ public class ResaleAPI {
         else {
             Log.e("ResaleAPI", "Invalid area range");
         }
-        if (flat.getRemainingLease() >= minarea && flat.getRemainingLease() < maxarea)
+        if (flat.getFloorArea() >= minarea && flat.getFloorArea() < maxarea)
             return true;
         else
             return false;
@@ -241,7 +241,7 @@ public class ResaleAPI {
         else {
             Log.e("ResaleAPI", "Invalid storey range");
         }
-        if (Integer.parseInt(flat.getStorey().substring(0,1)) <= maxstorey && Integer.parseInt(flat.getStorey().substring(6,7)) >= minstorey)
+        if (Integer.parseInt(flat.getStorey().substring(0,2)) <= maxstorey && Integer.parseInt(flat.getStorey().substring(6,8)) >= minstorey)
             return true;
         else
             return false;
