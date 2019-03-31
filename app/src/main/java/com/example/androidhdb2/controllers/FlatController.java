@@ -136,7 +136,7 @@ public class FlatController {
         String [] Database_Storey_range =  database_Storey_range;
 
         ArrayList<ResaleFlat> relevantFlats = new ArrayList<ResaleFlat>();
-        Log.d("filterflats", flat_type + ' ' + sellingprice + ' ' + lease_range);
+        Log.d("filterflats", flat_type + ' ' + sellingprice + ' ' + storey_range);
         for (int i=0; i<flats.size(); i++) {
             Log.d("RelevantFlats", String.valueOf(compare_type(flats.get(i), flat_type))+ String.valueOf(compare_price(flats.get(i), sellingprice, database_Selling_Price_range))+String.valueOf(compare_lease(flats.get(i), lease_range, database_Remaining_Lease_range)));
             if (compare_type(flats.get(i), flat_type)
@@ -244,15 +244,18 @@ public class FlatController {
         if (storey_range_detail.equals(Database_Storey_range[1])) {
             minstorey = 1; maxstorey = 4;}
         else if (storey_range_detail.equals(Database_Storey_range[2])) {
-            minstorey = 5; maxstorey = 10;}
+            minstorey = 5; maxstorey = 8;}
         else if (storey_range_detail.equals(Database_Storey_range[3])) {
-            minstorey = 11; maxstorey = 15;}
+            minstorey = 9; maxstorey = 12;}
         else if (storey_range_detail.equals(Database_Storey_range[4])) {
+            minstorey = 12; maxstorey = 16;}
+        else if (storey_range_detail.equals(Database_Storey_range[5])) {
             minstorey = 16; maxstorey = 200;}
         else {
             Log.e("ResaleAPI", "Invalid storey range");
         }
-        if (Integer.parseInt(flat.getStorey().substring(0,1)) <= maxstorey && Integer.parseInt(flat.getStorey().substring(6,7)) >= minstorey)
+        Log.d("Storey",flat.getStorey().substring(0,2) + " " + flat.getStorey().substring(6,8));
+        if (Integer.parseInt(flat.getStorey().substring(0,2)) <= maxstorey && Integer.parseInt(flat.getStorey().substring(6,8)) >= minstorey)
             return true;
         else
             return false;
