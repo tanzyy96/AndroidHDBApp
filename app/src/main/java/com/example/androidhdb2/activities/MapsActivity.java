@@ -122,6 +122,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 getResources().getStringArray(R.array.Floor_Area_Range),
                 flatType, priceRange, leaseRange, storeyRange, areaRange);
 
+        Toast.makeText(this, "Number of flats: " + resaleFlatArrayList.size(), Toast.LENGTH_SHORT).show();
+
         for(int i = 0; i<flatdetail.length;i++)
         {
             Log.d("FLAT","flat detail = " + flatdetail[i]);
@@ -1055,6 +1057,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat,lng), 13.2f));
                 region = hm.get(polygon);
                 ArrayList<ResaleFlat> resaleList = fc.filterResaleRegion(resaleFlatArrayList, region);
+                Toast.makeText(MapsActivity.this, "Number of flats: "+ resaleList.size(), Toast.LENGTH_SHORT).show();
                 Log.d("RESALE", String.valueOf(resaleList));
                 for(int i = 0; i<resaleList.size(); i++)
                     Log.d("RESALE"+String.valueOf(i), String.valueOf(resaleList.get(i)));

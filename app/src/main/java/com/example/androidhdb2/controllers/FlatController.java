@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.androidhdb2.model.PastBtoFlat;
 import com.example.androidhdb2.model.ResaleFlat;
@@ -229,7 +230,7 @@ public class FlatController {
         else {
             Log.e("ResaleAPI", "Invalid area range");
         }
-        if (flat.getRemainingLease() >= minarea && flat.getRemainingLease() < maxarea)
+        if (flat.getFloorArea() >= minarea && flat.getFloorArea() < maxarea)
             return true;
         else
             return false;

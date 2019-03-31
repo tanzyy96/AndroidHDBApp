@@ -46,6 +46,7 @@ public class ResaleAPI {
 
 
     public static ArrayList<ResaleFlat> requestData(String url_Flat_Type, String url_date_2019) {
+        lock = false;
         OkHttpClient client = new OkHttpClient();
         ArrayList<ResaleFlat> ResaleFlatArray = new ArrayList<ResaleFlat>();
 
